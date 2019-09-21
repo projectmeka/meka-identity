@@ -13,7 +13,11 @@ the user can derive many polkadot's addresses and bitcoin's addresses from the s
 * bind relationship setup
 
 ### future usages
-the binding relationship can be used to build bridges, calc reputation, trace portfolio etc...
+the binding relationship can be used in many ways 
+* build bridges
+* calc cross-chain reputation
+* trace cross-chain portfolio 
+* etc...
 
 for the bridge, different from chainx, the meka identity based bridge does not need you to add extre data on btc chain. 
 

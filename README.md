@@ -1,75 +1,35 @@
-# substrate-module-template
+## meka-identity
 
-This is a template for a Substrate runtime module which lives as its own crate so it can be imported into multiple other runtimes. It is based on the ["template" module](https://github.com/paritytech/substrate/blob/master/node-template/runtime/src/template.rs) which is included with the [Substrate node template](https://github.com/paritytech/substrate/tree/master/node-template).
+meka identity is a solution for cross-chain identity based on bip-44. It's to create binding relationship between user's bip44 addresses.
 
-Check out the [HOWTO](HOWTO.md) to learn how to use this for your own runtime module.
+for example, the default polkadot's derive path is `m/44'/359'/0'/0/0` and the default bitcoin derive path is `m/44'/0'/0'/0/0`.
 
-This README should act as a general template for distributing your module to others.
+the user can derive many polkadot's addresses and bitcoin's addresses from the same seed. so there is no need to prove if they belongs to the same owner. 
 
-## Purpose
+* if the seed is `A`
+* the xpub key of bitcoin which is derived from the seed accroding to the path `m/44'/0'` is `B`
+* the xpub key of polkadot which is derived from the seed accroding to the path `m/44'/359'` is `C`
+* on substrate-based blockchain, send a meesage from `C` address and includes a signed data from `B` to set up the binding relationship.
+* bind relationship setup
 
-This module acts as a template for building other runtime modules.
+### future usages
+the binding relationship can be used to build bridges, calc reputation, trace portfolio etc...
 
-It currently allows a user to put a `u32` value into storage, which triggers a runtime event.
+for the bridge, different from chainx, the meka identity based bridge does not need you to add extre data on btc chain. 
 
-## Dependencies
+### api
 
-### Traits
+* bind(accountId, chain, xpub, startDate)
+* unbind(accountId, chain, xpub, endDate)
+* setAdmin(accountId)
+* adminBind(accountId, chain, xpub)
+* adminUnbind(accountId, chain, xpub)
 
-This module does not depend on any externally defined traits.
+### storage
+* binded(accountId, chain, xpub)[]
+* adminAccountId
 
-### Modules
-
-This module does not depend on any other SRML or externally developed modules.
-
-## Installation
-
-### Runtime `Cargo.toml`
-
-To add this module to your runtime, simply include the following to your runtime's `Cargo.toml` file:
-
-```rust
-[dependencies.substrate-module-template]
-default_features = false
-git = 'https://github.com/shawntabrizi/substrate-module-template.git'
-```
-
-and update your runtime's `std` feature to include this module:
-
-```rust
-std = [
-    ...
-    'example_module/std',
-]
-```
-
-### Runtime `lib.rs`
-
-You should implement it's trait like so:
-
-```rust
-/// Used for the module test_module
-impl substrate_module_template::Trait for Runtime {
-	type Event = Event;
-}
-```
-
-and include it in your `construct_runtime!` macro:
-
-```rust
-ExampleModule: substrate_module_template::{Module, Call, Storage, Event<T>},
-```
-
-### Genesis Configuration
-
-This template module does not have any genesis configuration.
-
-## Reference Docs
-
-You can view the reference docs for this module by running:
-
-```
-cargo doc --open
-```
-
-or by visiting this site: <Add Your Link>
+### pending problems
+* is it secure enough to expose the xpub key
+* how to strikly prove it's derived from the same seed and if it's necessary
+* handle gap easily

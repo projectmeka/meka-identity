@@ -12,7 +12,9 @@ the user can derive many polkadot's addresses and bitcoin's addresses from the s
 * on substrate-based blockchain, send a meesage from `C` address and includes a signed data from `B` to set up the binding relationship.
 * bind relationship setup
 
-### future usages
+notice, it uses xpub (after hardended) rather than private keys, it means it can means it can bind many bitcoin address at the same time. it's just like hd wallet.
+
+### further usages
 the binding relationship can be used in many ways 
 * build bridges
 * calc cross-chain reputation
